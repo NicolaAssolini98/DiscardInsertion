@@ -1,0 +1,147 @@
+In all these example we comment the discard that our procedure detects
+We write _ to refers to classical variables or classical expression,
+in this way the classical part of the language will be ignored
+
+
+@guppy(module)
+def fun(z: qubit,u:qubit):
+    r,a = qubit()
+
+    while e:
+        #discard(a)
+        a = qubit()
+        z,a,r = g(z,a,r)
+
+    e = measure(a)
+    if _:
+        #discard z
+        c = h(r)
+    else:
+        #discard r
+        c = h(z)
+
+    u,c = cx(u,c)
+    # unused z
+    return c
+
+
+@guppy(module)
+# here i have to insert 2 discard
+def cond_overwriting(_: qubit) -> qubit:
+    c = qubit()
+    if e:
+        b = qubit()
+        if e:
+            b = x(b)
+            #discard(b)
+        else:
+            #discard(b)
+            pass
+
+    b = qubit()
+
+
+    return b,c
+
+
+@guppy(module)
+def loop_consume(_: qubit) -> qubit:
+    c = qubit()
+    while e:
+        b = qubit()
+        b = x(b)
+        #discard(b)
+
+    return c
+
+
+
+@guppy
+def and3(x: qubit,y: qubit,z: qubit):
+    r,a = qubit(),qubit()
+    x,y,a = toff(x,y,a)
+    z,a,r = toff(z,a,r)
+    # discard(a)
+
+    return x,y,z,r
+
+
+@guppy
+# we need to discars c in the else branch of the second if
+# and b in the else branch of the first if
+def unc_example(b: qubit):
+    if e:
+        c = qubit()
+        m = measure(b)
+        if m:
+            a = h(c)
+        else:
+            a = qubit()
+    else:
+        a = qubit()
+
+    return a
+
+
+@guppy(module)
+def loop_over1(b: qubit) -> qubit:
+    c = qubit()
+    while e:
+        #discard(b)
+        b = qubit()
+        b = x(b)
+
+
+    return b,c
+
+
+@guppy(module)
+def loop_over2(b: qubit) -> qubit:
+    c = h(b)
+    while e:
+        b = qubit()
+        b = x(b)
+        #discard(b)
+
+    return c
+
+
+@guppy(module)
+def loop_over1(b: qubit) -> qubit:
+    #discard(b)
+    c = qubit()
+    while e:
+        b = qubit()
+        b = x(b)
+        #discard(b)
+
+
+    return c
+
+
+ @guppy(module)
+# rus from guppy PlanQc paper
+def rus_planQc(q: qibit) -> Qubit:
+    while w :
+        a, b = qubit(), qubit()
+        b, a = fun(b, a)
+        e = measure(a)
+        if e:
+            q, b = fun(q, b)
+            e = measure(b)
+
+    return q
+
+
+
+ @guppy(module)
+def keep_redefine(a: qibit) -> Qubit:
+    a = qubit()
+    if _:
+        a = h(a)
+    else:
+        a = qubit()
+
+    return a
+
+
