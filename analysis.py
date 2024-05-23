@@ -18,36 +18,6 @@ if not debug:
     print = disable_print
 
 
-class Value(Enum):
-    Bot = 1
-    Z = 2
-    X = 3
-    Y = 4
-    XY = 5
-    YZ = 6
-    XZ = 7
-    S = 8
-    Top = 9
-
-
-relation = [
-    (Value.Bot, Value.Z),
-    (Value.Bot, Value.X),
-    (Value.Bot, Value.Y),
-    (Value.Z, Value.XZ),
-    (Value.Z, Value.YZ),
-    (Value.X, Value.XY),
-    (Value.X, Value.XZ),
-    (Value.Y, Value.XY),
-    (Value.Y, Value.YZ),
-    (Value.XY, Value.S),
-    (Value.S, Value.Top),
-    (Value.XZ, Value.Top),
-    (Value.YZ, Value.Top)
-]
-cpo = nx.DiGraph()
-cpo.add_edges_from(relation)
-
 def get_all_vars(cfg):
     all_vars = set()
     for _, _, data in cfg.edges(data=True):
@@ -98,6 +68,7 @@ def consumption_analysis(cfg):
                 temps_avs.append(temp_avs)
 
             avs[node] = reduce(lambda x, y: x & y, temps_avs) if len(temps_avs) > 0 else set()
+
         fixpoint = old_avs == avs
 
     return avs
